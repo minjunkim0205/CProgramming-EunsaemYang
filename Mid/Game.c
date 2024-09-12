@@ -23,7 +23,7 @@ int main()
     int score = 0;
     int dir[4][2] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}; // Up, Down, Left, Right
     /*Snake */
-    int snake_dir[2] = {dir[0][0], dir[0][1]};                 // Up
+    int snake_dir[2] = {dir[0][0], dir[0][1]};                    // Up
     int snake[625][2] = {{10, 13}, {10, 12}, {10, 11}, {10, 10}}; // 25x25=최대625칸
     int snake_length = 4;
     bool snake_booster = false;
@@ -77,28 +77,44 @@ int main()
             {
                 running = false;
             }
-            //printf("%d", key);
+            // printf("%d", key);
         }
         else
         {
             snake_booster = false;
         }
         /*Snake, Apple */
-        for(int i = 0; i < snake_length-1; i++)
+        if (snake[snake_length-1][0] == apple[0] && snake[snake_length-1][1] == apple[1])
         {
-            snake[i][0] = snake[i+1][0];
-            snake[i][1] = snake[1+1][1];
+            snake_length++;
+            apple[0] = (rand() % 10);
+            apple[1] = (rand() % 10);
+            snake[snake_length - 1][0] = snake[snake_length - 2][0];
+            snake[snake_length - 1][1] = snake[snake_length - 2][1];
         }
-        snake[snake_length-1][0] += snake_dir[0];
-        snake[snake_length-1][1] += snake_dir[1];
+        else
+        {
+            for (int i = 0; i < snake_length - 1; i++)
+            {
+                snake[i][0] = snake[i + 1][0];
+                snake[i][1] = snake[i + 1][1];
+            }
+        }
+        snake[snake_length - 1][0] += snake_dir[0];
+        snake[snake_length - 1][1] += snake_dir[1];
+        /*Game over */
+        if(snake[snake_length-1][0]<0||snake[snake_length-1][1]<0||25<=snake[snake_length-1][0]||25<=snake[snake_length-1][1])
+        {
+            running = false;
+        }
         /*Refresh game screen */
         system("cls");
-        gotoXY(apple[0]*2, apple[1]);
+        gotoXY(apple[0] * 2, apple[1]);
         printf("*");
         for (int i = 0; i < snake_length; i++)
         {
-            gotoXY(snake[i][0]*2, snake[i][1]);
-            if (i == (snake_length-1))
+            gotoXY(snake[i][0] * 2, snake[i][1]);
+            if (i == (snake_length - 1))
             {
                 printf("@");
             }
@@ -107,7 +123,14 @@ int main()
                 printf("#");
             }
         }
-        Sleep(100);
+        if(snake_booster)
+        {   
+            Sleep(10);
+        }
+        else
+        {
+            Sleep(100);
+        }
     }
     /*Exit */
     system("pause");
