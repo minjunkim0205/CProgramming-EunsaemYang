@@ -5,7 +5,7 @@ int main(){
     printf("문자를 입력하세요 >> ");
     scanf("%c", &cha);
 
-    getchar();
+    while (getchar() != '\n'); // 입력 버퍼 지우기
 
     printf("문자를 입력하세요 >> ");
     scanf("%c", &chb);
