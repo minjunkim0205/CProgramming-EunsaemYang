@@ -18,6 +18,7 @@ int main()
 {
     /*Init */
     srand(time(NULL));
+    system("mode con cols=30 lines=30 | title Snake game");
     /*Game */
     bool running = true;
     int score = 0;
@@ -86,6 +87,7 @@ int main()
         /*Snake, Apple */
         if (snake[snake_length-1][0] == apple[0] && snake[snake_length-1][1] == apple[1])
         {
+            score += 100;
             snake_length++;
             apple[0] = (rand() % 10);
             apple[1] = (rand() % 10);
@@ -106,6 +108,12 @@ int main()
         if(snake[snake_length-1][0]<0||snake[snake_length-1][1]<0||25<=snake[snake_length-1][0]||25<=snake[snake_length-1][1])
         {
             running = false;
+        }
+        for(int i = 0; i < snake_length-1; i++){
+            if(snake[snake_length-1][0] == snake[i][0] && snake[snake_length-1][1] == snake[i][1]){
+                running = false;
+                break;
+            }
         }
         /*Refresh game screen */
         system("cls");
